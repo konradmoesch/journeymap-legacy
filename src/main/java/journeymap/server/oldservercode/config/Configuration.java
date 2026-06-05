@@ -19,6 +19,7 @@ public class Configuration
     private boolean SaveInWorldFolder;
     private CaveMapping cave;
     private Radar radar;
+    private Teleport teleport;
     private float ConfigVersion;
 
 
@@ -26,6 +27,7 @@ public class Configuration
     {
         this.cave = new CaveMapping();
         this.radar = new Radar();
+        this.teleport = new Teleport();
     }
 
     public boolean isSaveInWorldFolder()
@@ -46,6 +48,10 @@ public class Configuration
     public CaveMapping getCaveMapping()
     {
         return this.cave;
+    }
+
+    public Teleport getTeleport() {
+        return this.teleport;
     }
 
     public boolean isUsingWorldID()
@@ -161,6 +167,43 @@ public class Configuration
         public void setWhiteListRadar(String whiteListRadar)
         {
             WhiteListRadar = whiteListRadar;
+        }
+    }
+
+    public static class Teleport
+    {
+        private boolean PlayerTeleport;
+        private boolean OpTeleport;
+        private String WhiteListTeleport;
+
+        public boolean isPlayerTeleport()
+        {
+            return PlayerTeleport;
+        }
+
+        public void setPlayerTeleport(boolean playerTeleport)
+        {
+            PlayerTeleport = playerTeleport;
+        }
+
+        public boolean isOpTeleport()
+        {
+            return OpTeleport;
+        }
+
+        public void setOpTeleport(boolean opTeleport)
+        {
+            OpTeleport = opTeleport;
+        }
+
+        public String getWhiteListTeleport()
+        {
+            return WhiteListTeleport;
+        }
+
+        public void setWhiteListTeleport(String whiteListTeleport)
+        {
+            WhiteListTeleport = whiteListTeleport;
         }
     }
 }

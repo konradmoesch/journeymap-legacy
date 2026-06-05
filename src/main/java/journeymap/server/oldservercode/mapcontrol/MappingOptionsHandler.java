@@ -63,6 +63,26 @@ public class MappingOptionsHandler
         return true;
     }
 
+    public boolean disableTeleport(String player)
+    {
+        if (config.getTeleport().isPlayerTeleport())
+        {
+            return false;
+        }
+        else if (PlayerUtil.isOp(player) && config.getTeleport().isOpTeleport())
+        {
+            return false;
+        }
+        else if (config.getTeleport().getWhiteListTeleport() != null)
+        {
+            if (isUserInWhiteList(config.getTeleport().getWhiteListTeleport(), player))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private boolean isUserInWhiteList(String userList, String player)
     {
         userList = userList.replace(" ", "");

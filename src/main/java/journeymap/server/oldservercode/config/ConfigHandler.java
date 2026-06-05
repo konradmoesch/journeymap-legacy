@@ -21,7 +21,7 @@ import java.util.UUID;
  */
 public class ConfigHandler
 {
-    private static final float CONFIG_VERSION = 1.12F;
+    private static final float CONFIG_VERSION = 1.13F;
     private static File configPath;
 
     public static void init(File configPath)
@@ -81,6 +81,9 @@ public class ConfigHandler
         config.getCaveMapping().setOpCaveMapping(true);
         config.getCaveMapping().setPlayerCaveMapping(true);
         config.getCaveMapping().setWhiteListCaveMapping("");
+        config.getTeleport().setOpTeleport(true);
+        config.getTeleport().setPlayerTeleport(true);
+        config.getTeleport().setWhiteListTeleport("");
         if (Controller.FORGE.equals(Controller.getController()))
         {
             config.setUsingWorldID(false);
@@ -121,6 +124,13 @@ public class ConfigHandler
                     config.setUsingWorldID(true);
                     config.setWorldID(config.getWorldID());
                 }
+            }
+
+            if (version <= 1.13F && Controller.FORGE.equals(Controller.getController()))
+            {
+                config.getTeleport().setOpTeleport(true);
+                config.getTeleport().setPlayerTeleport(true);
+                config.getTeleport().setWhiteListTeleport("");
             }
 
             if (version < CONFIG_VERSION)

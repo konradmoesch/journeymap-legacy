@@ -13,7 +13,8 @@ public enum Feature
     RadarAnimals,
     RadarMobs,
     RadarVillagers,
-    MapCaves;
+    MapCaves,
+    Teleport;
 
     public static EnumSet<Feature> radar()
     {

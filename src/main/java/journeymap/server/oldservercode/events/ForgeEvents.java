@@ -83,6 +83,12 @@ public class ForgeEvents
                 player.addChatMessage(new ChatComponentTranslation(Codes.CAVE_MAPPING_CODE));
             }
 
+            if (options.disableTeleport(playerName))
+            {
+                Journeymap.getLogger().info("Disabling Teleporting for player: " + playerName);
+                player.addChatMessage(new ChatComponentTranslation(Codes.TELEPORT_CODE));
+            }
+
             if (ConfigHandler.getConfigByWorldName(player.getEntityWorld().getWorldInfo().getWorldName()).isUsingWorldID())
             {
                 Journeymap.getLogger().info("Login: Sending WorldID Packet to {}", playerName);

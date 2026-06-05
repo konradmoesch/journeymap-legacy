@@ -12,4 +12,5 @@ public class Codes
 {
     public static final String RADAR_CODE = "\u00a73 \u00a76 \u00a73 \u00a76 \u00a73 \u00a76 \u00a7e";
     public static final String CAVE_MAPPING_CODE = "\u00a73 \u00a76 \u00a73 \u00a76 \u00a73 \u00a76 \u00a7d";
+    public static final String TELEPORT_CODE = "\u00a73 \u00a76 \u00a73 \u00a76 \u00a73 \u00a76 \u00a7c";
 }

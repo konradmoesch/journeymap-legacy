@@ -6,6 +6,8 @@
 package journeymap.client.command;
 
 import com.mojang.authlib.GameProfile;
+import journeymap.client.feature.Feature;
+import journeymap.client.feature.FeatureManager;
 import journeymap.client.forge.helper.ForgeHelper;
 import journeymap.client.log.LogFormatter;
 import journeymap.client.model.Waypoint;
@@ -30,6 +32,9 @@ public class CmdTeleportWaypoint
 
     public static boolean isPermitted(Minecraft mc)
     {
+        if (!FeatureManager.isAllowed(Feature.Teleport)) {
+            return false;
+        }
         if (mc.getIntegratedServer() != null)
         {
             IntegratedServer mcServer = mc.getIntegratedServer();

@@ -38,6 +38,8 @@ public class FeatureManager
         disableControlCodes.put("\u00a73\u00a76\u00a73\u00a76\u00a73\u00a76\u00a7e", Feature.radar());
         disableControlCodes.put("\u00a73 \u00a76 \u00a73 \u00a76 \u00a73 \u00a76 \u00a7d", EnumSet.of(Feature.MapCaves));
         disableControlCodes.put("\u00a73\u00a76\u00a73\u00a76\u00a73\u00a76\u00a7d", EnumSet.of(Feature.MapCaves));
+        disableControlCodes.put("\u00a73 \u00a76 \u00a73 \u00a76 \u00a73 \u00a76 \u00a7c", EnumSet.of(Feature.Teleport));
+        disableControlCodes.put("\u00a73\u00a76\u00a73\u00a76\u00a73\u00a76\u00a7c", EnumSet.of(Feature.Teleport));
         policySet = locatePolicySet();
         reset();
     }
