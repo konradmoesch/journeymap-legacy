@@ -76,7 +76,7 @@ public class CommandJourneyMapServer
             else if (s.equals("resync"))
             {
                 sendMessage(sender, "Re-Syncing all clients!");
-                PacketHandler.sendAllPlayersWorldID(world);
+                PacketHandler.sendAllPlayersWorldID(ConfigHandler.getConfigByWorldName(world).getWorldID());
 
             }
             else
