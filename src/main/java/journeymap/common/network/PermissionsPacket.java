@@ -3,7 +3,7 @@
  * Copyright (c) 2011-2017  Techbrew Interactive, LLC <techbrew.net>.  All Rights Reserved.
  */
 
-package journeymap.server.oldservercode.network;
+package journeymap.common.network;
 
 /**
  * Created by Mysticdrew on 10/8/2014.

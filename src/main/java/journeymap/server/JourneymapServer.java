@@ -15,8 +15,6 @@ import journeymap.common.network.PacketHandler;
 import journeymap.server.nbt.WorldNbtIDSaveHandler;
 import journeymap.server.oldservercode.chat.ChatHandler;
 import journeymap.server.oldservercode.events.ForgeEvents;
-import journeymap.server.oldservercode.network.ForgePacketHandler;
-import journeymap.server.oldservercode.network.PacketManager;
 import journeymap.server.oldservercode.reference.Controller;
 import journeymap.server.oldservercode.util.ForgeChat;
 import journeymap.server.oldservercode.util.ForgePlayerUtil;
@@ -72,12 +70,11 @@ public class JourneymapServer implements CommonProxy
     @Override
     public void initialize(FMLInitializationEvent event)
     {
-//        PacketHandler packetHandler = new PacketHandler();
-//        packetHandler.init(Side.SERVER);
+        PacketHandler packetHandler = new PacketHandler();
+        packetHandler.init(Side.SERVER);
         Controller.setController(Controller.FORGE);
         MinecraftForge.EVENT_BUS.register(new ForgeEvents());
         //FMLCommonHandler.instance().bus().register(new FMLEvents());
-        PacketManager.init(new ForgePacketHandler());
         PlayerUtil.init(new ForgePlayerUtil());
         ChatHandler.init(new ForgeChat());
     }
