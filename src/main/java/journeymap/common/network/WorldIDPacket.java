@@ -82,6 +82,7 @@ public class WorldIDPacket implements IMessage
                 player = ctx.getServerHandler().playerEntity;
                 if (ConfigHandler.getConfigByWorldName(player.getEntityWorld().getWorldInfo().getWorldName()).isUsingWorldID())
                 {
+                    // message.worldID is empty (thus reading fails) since it's a request
                     Journeymap.proxy.handleWorldIdMessage(message.getWorldID(), player);
                 }
             }

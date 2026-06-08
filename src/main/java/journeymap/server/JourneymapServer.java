@@ -12,8 +12,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import journeymap.common.CommonProxy;
 import journeymap.common.Journeymap;
 import journeymap.common.network.PacketHandler;
-import journeymap.server.nbt.WorldNbtIDSaveHandler;
 import journeymap.server.oldservercode.chat.ChatHandler;
+import journeymap.server.oldservercode.config.ConfigHandler;
 import journeymap.server.oldservercode.events.ForgeEvents;
 import journeymap.server.oldservercode.reference.Controller;
 import journeymap.server.oldservercode.util.ForgeChat;
@@ -127,7 +127,7 @@ public class JourneymapServer implements CommonProxy
     @Override
     public void handleWorldIdMessage(String message, EntityPlayerMP playerEntity)
     {
-        WorldNbtIDSaveHandler nbt = new WorldNbtIDSaveHandler();
-        PacketHandler.sendPlayerWorldID(nbt.getWorldID(), playerEntity);
+        String worldID = ConfigHandler.getConfigByWorldName(getWorldName()).getWorldID();
+        PacketHandler.sendPlayerWorldID(worldID, playerEntity);
     }
 }
