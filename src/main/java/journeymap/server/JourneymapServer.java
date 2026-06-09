@@ -12,6 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import journeymap.common.CommonProxy;
 import journeymap.common.Journeymap;
 import journeymap.common.network.PacketHandler;
+import journeymap.server.network.ServerNetworkDispatcher;
 import journeymap.server.oldservercode.chat.ChatHandler;
 import journeymap.server.oldservercode.config.ConfigHandler;
 import journeymap.server.oldservercode.events.ForgeEvents;
@@ -128,6 +129,6 @@ public class JourneymapServer implements CommonProxy
     public void handleWorldIdMessage(String message, EntityPlayerMP playerEntity)
     {
         String worldID = ConfigHandler.getConfigByWorldName(getWorldName()).getWorldID();
-        PacketHandler.sendPlayerWorldID(worldID, playerEntity);
+        ServerNetworkDispatcher.sendPlayerWorldID(worldID, playerEntity);
     }
 }

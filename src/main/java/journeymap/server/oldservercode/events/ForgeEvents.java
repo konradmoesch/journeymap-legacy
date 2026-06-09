@@ -10,7 +10,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import journeymap.common.Journeymap;
-import journeymap.common.network.PacketHandler;
+import journeymap.server.network.ServerNetworkDispatcher;
 import journeymap.server.oldservercode.config.ConfigHandler;
 import journeymap.server.oldservercode.mapcontrol.MappingOptionsHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -72,9 +72,9 @@ public class ForgeEvents
             if (ConfigHandler.getConfigByWorldName(player.getEntityWorld().getWorldInfo().getWorldName()).isUsingWorldID())
             {
                 Journeymap.getLogger().info("Login: Sending WorldID Packet to {}", playerName);
-                PacketHandler.sendPlayerWorldID(worldID, player);
+                ServerNetworkDispatcher.sendPlayerWorldID(worldID, player);
             }
-            PacketHandler.sendPerms(player.getEntityWorld().getWorldInfo().getWorldName(), player);
+            ServerNetworkDispatcher.sendPerms(player.getEntityWorld().getWorldInfo().getWorldName(), player);
         }
     }
 }

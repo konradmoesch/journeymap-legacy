@@ -6,7 +6,7 @@
 package journeymap.server.oldservercode.command;
 
 
-import journeymap.common.network.PacketHandler;
+import journeymap.server.network.ServerNetworkDispatcher;
 import journeymap.server.oldservercode.config.ConfigHandler;
 import journeymap.server.oldservercode.config.Configuration;
 import journeymap.server.oldservercode.util.TabCompletionHelper;
@@ -76,7 +76,7 @@ public class CommandJourneyMapServer
             else if (s.equals("resync"))
             {
                 sendMessage(sender, "Re-Syncing all clients!");
-                PacketHandler.sendAllPlayersWorldID(ConfigHandler.getConfigByWorldName(world).getWorldID());
+                ServerNetworkDispatcher.sendAllPlayersWorldID(ConfigHandler.getConfigByWorldName(world).getWorldID());
 
             }
             else
@@ -95,7 +95,7 @@ public class CommandJourneyMapServer
         Configuration config = ConfigHandler.getConfigByWorldName(world);
         config.setWorldID(worldID);
         ConfigHandler.saveWorld(config, world);
-        PacketHandler.sendAllPlayersWorldID(worldID);
+        ServerNetworkDispatcher.sendAllPlayersWorldID(worldID);
         sendMessage(sender, String.format("WorldID set to %s", worldID));
     }
 
