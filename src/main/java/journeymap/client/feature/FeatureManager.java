@@ -7,12 +7,7 @@ package journeymap.client.feature;
 
 import journeymap.common.Journeymap;
 
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Governs what features are available at runtime.
@@ -123,10 +118,16 @@ public class FeatureManager
             for (Feature feature : disableControlCodes.get(controlCode))
             {
                 Journeymap.getLogger().info("Feature disabled in multiplayer via control code: {}", feature);
-                Holder.INSTANCE.policyMap.put(feature, new Policy(feature, true, false));
+                disableFeatureInMultiplayer(feature);
             }
 
         }
+    }
+
+    public void disableFeatureInMultiplayer (Feature feature)
+    {
+        Journeymap.getLogger().info("Feature disabled in multiplayer: {}", feature);
+        Holder.INSTANCE.policyMap.put(feature, new Policy(feature, true, false));
     }
 
     /**

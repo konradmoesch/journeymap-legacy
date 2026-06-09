@@ -13,9 +13,7 @@ import journeymap.common.Journeymap;
 import journeymap.common.network.PacketHandler;
 import journeymap.server.oldservercode.config.ConfigHandler;
 import journeymap.server.oldservercode.mapcontrol.MappingOptionsHandler;
-import journeymap.server.oldservercode.reference.Codes;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 
@@ -71,29 +69,12 @@ public class ForgeEvents
             // 1.8
             // String playerName = player.getName();
 
-            if (options.disableRadar(playerName))
-            {
-                Journeymap.getLogger().info("Disabling Radar for player: {}", playerName);
-                player.addChatMessage(new ChatComponentTranslation(Codes.RADAR_CODE));
-            }
-
-            if (options.disableCaveMapping(playerName))
-            {
-                Journeymap.getLogger().info("Disabling CaveMapping for player: {}", playerName);
-                player.addChatMessage(new ChatComponentTranslation(Codes.CAVE_MAPPING_CODE));
-            }
-
-            if (options.disableTeleport(playerName))
-            {
-                Journeymap.getLogger().info("Disabling Teleporting for player: " + playerName);
-                player.addChatMessage(new ChatComponentTranslation(Codes.TELEPORT_CODE));
-            }
-
             if (ConfigHandler.getConfigByWorldName(player.getEntityWorld().getWorldInfo().getWorldName()).isUsingWorldID())
             {
                 Journeymap.getLogger().info("Login: Sending WorldID Packet to {}", playerName);
                 PacketHandler.sendPlayerWorldID(worldID, player);
             }
+            PacketHandler.sendPerms(player.getEntityWorld().getWorldInfo().getWorldName(), player);
         }
     }
 }

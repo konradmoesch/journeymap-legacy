@@ -41,6 +41,7 @@ import journeymap.client.waypoint.WaypointStore;
 import journeymap.client.webmap.WebMap;
 import journeymap.common.CommonProxy;
 import journeymap.common.Journeymap;
+import journeymap.common.network.PacketHandler;
 import journeymap.common.version.VersionCheck;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -312,6 +313,10 @@ public class JourneymapClient implements CommonProxy
             {
                 WebMap.getInstance().start();
             }
+
+            PacketHandler packetHandler = new PacketHandler();
+            packetHandler.init(Side.CLIENT);
+
             initialized = true;
 
             VersionCheck.getVersionAvailable();
