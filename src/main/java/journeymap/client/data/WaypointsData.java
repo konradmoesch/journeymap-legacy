@@ -7,10 +7,9 @@ package journeymap.client.data;
 
 import com.google.common.cache.CacheLoader;
 import journeymap.client.JourneymapClient;
-import journeymap.client.log.LogFormatter;
-import journeymap.client.model.Waypoint;
 import journeymap.client.waypoint.WaypointStore;
 import journeymap.common.Journeymap;
+import journeymap.common.model.Waypoint;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,9 +46,9 @@ public class WaypointsData extends CacheLoader<Class, Collection<Waypoint>>
      *
      * @return
      */
-    protected static List<journeymap.client.model.Waypoint> getWaypoints()
+    protected static List<Waypoint> getWaypoints()
     {
-        ArrayList<Waypoint> list = new ArrayList<journeymap.client.model.Waypoint>(0);
+        ArrayList<Waypoint> list = new ArrayList<Waypoint>(0);
 
         if (isManagerEnabled())
         {

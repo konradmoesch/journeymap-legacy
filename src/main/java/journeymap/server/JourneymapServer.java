@@ -20,6 +20,7 @@ import journeymap.server.oldservercode.reference.Controller;
 import journeymap.server.oldservercode.util.ForgeChat;
 import journeymap.server.oldservercode.util.ForgePlayerUtil;
 import journeymap.server.oldservercode.util.PlayerUtil;
+import journeymap.server.waypoint.ServerWaypointStore;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.Logger;
@@ -71,6 +72,9 @@ public class JourneymapServer implements CommonProxy
     @Override
     public void initialize(FMLInitializationEvent event)
     {
+        ServerWaypointStore waypointStore = ServerWaypointStore.instance();
+        waypointStore.reset();
+
         PacketHandler packetHandler = new PacketHandler();
         packetHandler.init(Side.SERVER);
         Controller.setController(Controller.FORGE);

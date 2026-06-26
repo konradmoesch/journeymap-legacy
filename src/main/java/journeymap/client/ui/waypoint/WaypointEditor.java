@@ -12,20 +12,22 @@ import journeymap.client.data.WorldData;
 import journeymap.client.forge.helper.ForgeHelper;
 import journeymap.client.log.JMLogger;
 import journeymap.client.log.LogFormatter;
-import journeymap.client.model.Waypoint;
+import journeymap.client.network.ClientNetworkDispatcher;
 import journeymap.client.properties.FullMapProperties;
 import journeymap.client.render.draw.DrawUtil;
 import journeymap.client.render.texture.TextureCache;
 import journeymap.client.render.texture.TextureImpl;
 import journeymap.client.ui.UIManager;
-import journeymap.client.ui.component.Button;
 import journeymap.client.ui.component.*;
+import journeymap.client.ui.component.Button;
 import journeymap.client.ui.component.ScrollPane;
 import journeymap.client.ui.component.TextField;
 import journeymap.client.ui.fullscreen.Fullscreen;
 import journeymap.client.ui.option.LocationFormat;
 import journeymap.client.waypoint.WaypointStore;
 import journeymap.common.Journeymap;
+import journeymap.common.model.Waypoint;
+import journeymap.common.model.WaypointHelper;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -87,7 +89,7 @@ public class WaypointEditor extends JmUI
         this.originalWaypoint = waypoint;
         this.editedWaypoint = new Waypoint(originalWaypoint);
         this.isNew = isNew;
-        this.wpTexture = waypoint.getTexture();
+        this.wpTexture = WaypointHelper.getTexture(waypoint);
         this.colorPickTexture = TextureCache.instance().getColorPicker();
         this.colorPickRect = new Rectangle2D.Double(0, 0, colorPickTexture.getWidth(), colorPickTexture.getHeight());
         this.colorPickImg = colorPickTexture.getImage();
@@ -582,6 +584,9 @@ public class WaypointEditor extends JmUI
         updateWaypointFromForm();
         WaypointStore.instance().remove(originalWaypoint);
         WaypointStore.instance().save(editedWaypoint);
+
+        ClientNetworkDispatcher.sendAddWaypoint(editedWaypoint);
+
         refreshAndClose(editedWaypoint);
     }
 

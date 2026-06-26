@@ -6,8 +6,8 @@
 package journeymap.client.waypoint;
 
 import com.google.common.io.Files;
-import journeymap.client.model.Waypoint;
 import journeymap.common.Journeymap;
+import journeymap.common.model.Waypoint;
 
 import java.io.File;
 import java.io.FilenameFilter;

@@ -1,7 +1,10 @@
 package journeymap.client.network;
 
 import journeymap.common.Journeymap;
+import journeymap.common.model.Waypoint;
 import journeymap.common.network.PacketHandler;
+import journeymap.common.network.waypoints.WaypointAddPacket;
+import journeymap.common.network.waypoints.WaypointSyncRequestPacket;
 import journeymap.common.network.worldid.WorldIDRequestPacket;
 
 public class ClientNetworkDispatcher {
@@ -30,5 +33,16 @@ public class ClientNetworkDispatcher {
 
     public static void setLastWorldIdResponse(long millis) {
         lastWorldIdResponse = millis;
+    }
+
+    public static void requestWaypoints()
+    {
+        Journeymap.getLogger().info("Requesting Waypoints");
+        PacketHandler.JM_WAYPOINTS.sendToServer(new WaypointSyncRequestPacket());
+    }
+
+    public static void sendAddWaypoint(Waypoint waypoint) {
+        Journeymap.getLogger().info("Sending new waypoint to server");
+        PacketHandler.JM_WAYPOINTS.sendToServer(new WaypointAddPacket(waypoint));
     }
 }

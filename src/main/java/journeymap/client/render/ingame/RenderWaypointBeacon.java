@@ -11,12 +11,13 @@ import journeymap.client.cartography.RGB;
 import journeymap.client.forge.helper.ForgeHelper;
 import journeymap.client.forge.helper.IRenderHelper;
 import journeymap.client.log.LogFormatter;
-import journeymap.client.model.Waypoint;
 import journeymap.client.properties.WaypointProperties;
 import journeymap.client.render.draw.DrawUtil;
 import journeymap.client.render.texture.TextureImpl;
 import journeymap.client.waypoint.WaypointStore;
 import journeymap.common.Journeymap;
+import journeymap.common.model.Waypoint;
+import journeymap.common.model.WaypointHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -206,7 +207,7 @@ public class RenderWaypointBeacon
             // Set render scale (1/64)
             double scale = 0.00390625 * ((viewDistance + 4) / 3);
 
-            final TextureImpl texture = waypoint.getTexture();
+            final TextureImpl texture = WaypointHelper.getTexture(waypoint);
             double halfTexHeight = texture.getHeight() / 2;
 
             final int depthShadowAlpha = clampAlpha(Math.round(150.0F * fadeAlpha));

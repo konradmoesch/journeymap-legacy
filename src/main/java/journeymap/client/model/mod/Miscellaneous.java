@@ -9,12 +9,12 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import journeymap.client.forge.helper.ForgeHelper;
 import journeymap.client.model.BlockMD;
 import journeymap.client.model.ChunkMD;
-import journeymap.client.model.Waypoint;
 import journeymap.client.waypoint.WaypointStore;
+import journeymap.common.model.Waypoint;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.HashSet;
 
 import static journeymap.client.model.BlockMD.Flag.*;
@@ -125,7 +125,7 @@ public class Miscellaneous
                     playerName = "";
                 }
 
-                Waypoint waypoint = new Waypoint(playerName + " " + blockMD.getName(), blockX, y, blockZ, Color.red, Waypoint.Type.Death, chunkMD.getDimension());
+                Waypoint waypoint = new Waypoint(playerName + " " + blockMD.getName(), blockX, y, blockZ, Color.red, Waypoint.Type.Death, chunkMD.getDimension(), playerName);
                 WaypointStore.instance().add(waypoint);
             }
 

@@ -5,39 +5,21 @@
 
 package journeymap.client.data;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.CacheStats;
-import com.google.common.cache.LoadingCache;
-import com.google.common.cache.RemovalListener;
-import com.google.common.cache.RemovalNotification;
+import com.google.common.cache.*;
 import gnu.trove.map.TLongObjectMap;
 import gnu.trove.map.hash.TLongObjectHashMap;
 import journeymap.client.JourneymapClient;
 import journeymap.client.log.LogFormatter;
-import journeymap.client.model.ChunkMD;
-import journeymap.client.model.EntityDTO;
-import journeymap.client.model.MapType;
-import journeymap.client.model.RegionCoord;
-import journeymap.client.model.RegionImageCache;
-import journeymap.client.model.RegionImageSet;
-import journeymap.client.model.Waypoint;
+import journeymap.client.model.*;
 import journeymap.client.render.draw.DrawEntityStep;
 import journeymap.client.render.draw.DrawWayPointStep;
 import journeymap.client.waypoint.WaypointStore;
 import journeymap.common.Journeymap;
+import journeymap.common.model.Waypoint;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.ChunkCoordIntPair;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 

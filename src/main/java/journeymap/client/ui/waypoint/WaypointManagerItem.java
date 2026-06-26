@@ -9,7 +9,6 @@ import journeymap.client.Constants;
 import journeymap.client.cartography.RGB;
 import journeymap.client.command.CmdTeleportWaypoint;
 import journeymap.client.forge.helper.ForgeHelper;
-import journeymap.client.model.Waypoint;
 import journeymap.client.render.draw.DrawUtil;
 import journeymap.client.render.texture.TextureImpl;
 import journeymap.client.ui.UIManager;
@@ -20,6 +19,8 @@ import journeymap.client.ui.component.ScrollListPane;
 import journeymap.client.ui.fullscreen.Fullscreen;
 import journeymap.client.ui.option.SlotMetadata;
 import journeymap.client.waypoint.WaypointStore;
+import journeymap.common.model.Waypoint;
+import journeymap.common.model.WaypointHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -181,7 +182,7 @@ public class WaypointManagerItem implements ScrollListPane.ISlot
 
     protected void drawWaypoint(int x, int y)
     {
-        TextureImpl wpTexture = waypoint.getTexture();
+        TextureImpl wpTexture = WaypointHelper.getTexture(waypoint);
         DrawUtil.drawColoredImage(wpTexture, 255, waypoint.getColor(), x, y - (wpTexture.getHeight() / 2), 0);
     }
 

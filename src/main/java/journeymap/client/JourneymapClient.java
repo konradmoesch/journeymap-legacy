@@ -508,6 +508,8 @@ public class JourneymapClient implements CommonProxy
         UIManager.getInstance().getMiniMap().reset();
         UIManager.getInstance().reset();
         WaypointStore.instance().reset();
+
+        ClientNetworkDispatcher.requestWaypoints();
     }
 
     /**

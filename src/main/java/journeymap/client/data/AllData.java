@@ -8,7 +8,7 @@ package journeymap.client.data;
 import com.google.common.cache.CacheLoader;
 import com.google.common.collect.ImmutableMap;
 import journeymap.client.JourneymapClient;
-import journeymap.client.model.Waypoint;
+import journeymap.common.model.Waypoint;
 
 import java.util.*;
 

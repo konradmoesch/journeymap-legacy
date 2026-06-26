@@ -41,6 +41,7 @@ public class WorldInfoHandler
             if (ForgeHelper.INSTANCE.getEntityName(event.entity).equals(ForgeHelper.INSTANCE.getEntityName(mc.thePlayer)))
             {
                 ClientNetworkDispatcher.requestWorldID();
+                ClientNetworkDispatcher.requestWaypoints();
             }
         }
     }

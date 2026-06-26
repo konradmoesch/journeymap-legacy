@@ -7,8 +7,8 @@ import io.javalin.http.ContentType;
 import io.javalin.http.Context;
 import journeymap.client.data.DataCache;
 import journeymap.client.data.ImagesData;
-import journeymap.client.model.Waypoint;
 import journeymap.common.Journeymap;
+import journeymap.common.model.Waypoint;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;

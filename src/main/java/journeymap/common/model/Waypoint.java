@@ -3,16 +3,17 @@
  * Copyright (c) 2011-2017  Techbrew Interactive, LLC <techbrew.net>.  All Rights Reserved.
  */
 
-package journeymap.client.model;
+package journeymap.common.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Since;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import journeymap.client.Constants;
 import journeymap.client.cartography.RGB;
 import journeymap.client.forge.helper.ForgeHelper;
-import journeymap.client.render.texture.TextureCache;
-import journeymap.client.render.texture.TextureImpl;
+import journeymap.common.Journeymap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
@@ -20,8 +21,9 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkCoordIntPair;
 
 import java.awt.*;
-import java.io.Serializable;
+import java.io.*;
 import java.text.DateFormat;
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -77,9 +79,15 @@ public class Waypoint implements Serializable
     @Since(1)
     protected TreeSet<Integer> dimensions;
 
+    @Since(1)
+    protected long modified;
+
+    @Since(1)
+    protected String owner;
+
     protected transient boolean readOnly;
     protected transient boolean dirty;
-    protected transient Minecraft mc = ForgeHelper.INSTANCE.getClient();
+    //protected transient Minecraft mc = ForgeHelper.INSTANCE.getClient();
 
     /**
      * Default constructor Required by GSON
@@ -90,21 +98,26 @@ public class Waypoint implements Serializable
 
     public Waypoint(Waypoint original)
     {
-        this(original.name, original.x, original.y, original.z, original.enable, original.r, original.g, original.b, original.type, original.origin, original.dimensions.first(), original.dimensions);
+        this(original.name, original.x, original.y, original.z, original.enable, original.r, original.g, original.b, original.type, original.origin, original.dimensions.first(), original.dimensions, original.owner);
         this.x = original.x;
         this.y = original.y;
         this.z = original.z;
+        this.owner = original.owner;
     }
 
-    public Waypoint(String name, int posX, int posY, int posZ, Color color, Type type, Integer currentDimension)
+    public Waypoint(String name, int posX, int posY, int posZ, Color color, Type type, Integer currentDimension, String owner)
     {
-        this(name, posX, posY, posZ, true, color.getRed(), color.getGreen(), color.getBlue(), type, Origin.JourneyMap, currentDimension, Arrays.asList(currentDimension));
+        this(name, posX, posY, posZ, true, color.getRed(), color.getGreen(), color.getBlue(), type, Origin.JourneyMap, currentDimension, Arrays.asList(currentDimension), owner);
+    }
+
+    public static Waypoint newEmptyWaypoint() {
+        return new Waypoint("", 0, 0, 0, Color.white, Type.Normal, 0, "");
     }
 
     /**
      * Main constructor.
      */
-    public Waypoint(String name, int x, int y, int z, boolean enable, int red, int green, int blue, Type type, Origin origin, Integer currentDimension, Collection<Integer> dimensions)
+    public Waypoint(String name, int x, int y, int z, boolean enable, int red, int green, int blue, Type type, Origin origin, Integer currentDimension, Collection<Integer> dimensions, String owner)
     {
         if (name == null)
         {
@@ -113,7 +126,7 @@ public class Waypoint implements Serializable
         if (dimensions == null || dimensions.size() == 0)
         {
             dimensions = new TreeSet<Integer>();
-            dimensions.add(ForgeHelper.INSTANCE.getPlayerDimension());
+            //dimensions.add(ForgeHelper.INSTANCE.getPlayerDimension());
         }
         this.dimensions = new TreeSet<Integer>(dimensions);
         this.dimensions.add(currentDimension);
@@ -141,6 +154,10 @@ public class Waypoint implements Serializable
                 break;
             }
         }
+
+        this.owner = owner;
+
+        this.updateModified();
     }
 
     public static Waypoint of(EntityPlayer player)
@@ -162,7 +179,11 @@ public class Waypoint implements Serializable
         {
             name = createName(posX, posZ);
         }
-        Waypoint waypoint = new Waypoint(name, posX, posY, posZ, Color.white, type, dimension);
+        Minecraft mc = ForgeHelper.INSTANCE.getClient();
+        String playerName = mc.thePlayer.getCommandSenderName();
+        //String playerName = "mc.thePlayer.getCommandSenderName()";
+
+        Waypoint waypoint = new Waypoint(name, posX, posY, posZ, Color.white, type, dimension, playerName);
         waypoint.setRandomColor();
         return waypoint;
     }
@@ -182,6 +203,7 @@ public class Waypoint implements Serializable
         this.x = (currentDimension == -1) ? x * 8 : x;
         this.y = y;
         this.z = (currentDimension == -1) ? z * 8 : z;
+        this.updateModified();
         updateId();
     }
 
@@ -189,6 +211,7 @@ public class Waypoint implements Serializable
     {
         String oldId = this.id;
         this.id = String.format("%s_%s,%s,%s", this.name, this.x, this.y, this.z);
+        this.updateModified();
         return oldId;
     }
 
@@ -197,10 +220,7 @@ public class Waypoint implements Serializable
         return this.type == Type.Death;
     }
 
-    public TextureImpl getTexture()
-    {
-        return isDeathPoint() ? TextureCache.instance().getDeathpoint() : TextureCache.instance().getWaypoint();
-    }
+
 
     public ChunkCoordIntPair getChunkCoordIntPair()
     {
@@ -245,6 +265,7 @@ public class Waypoint implements Serializable
         this.r = (rgb >> 16) & 0xFF;
         this.g = (rgb >> 8) & 0xFF;
         this.b = (rgb) & 0xFF;
+        this.updateModified();
     }
 
     public int getSafeColor()
@@ -264,6 +285,7 @@ public class Waypoint implements Serializable
     public void setDimensions(Collection<Integer> dims)
     {
         this.dimensions = new TreeSet<Integer>(dims);
+        this.updateModified();
     }
 
     public boolean isTeleportReady()
@@ -289,6 +311,7 @@ public class Waypoint implements Serializable
     public void setName(String name)
     {
         this.name = name;
+        this.updateModified();
     }
 
     public String getIcon()
@@ -303,7 +326,8 @@ public class Waypoint implements Serializable
 
     public int getX()
     {
-        return (mc.thePlayer.dimension == -1) ? x / 8 : x;
+        //return (mc.thePlayer.dimension == -1) ? x / 8 : x;
+        return x;
     }
 
     public double getBlockCenteredX()
@@ -323,7 +347,8 @@ public class Waypoint implements Serializable
 
     public int getZ()
     {
-        return (mc.thePlayer.dimension == -1) ? z / 8 : z;
+        //return (mc.thePlayer.dimension == -1) ? z / 8 : z;
+        return z;
     }
 
     public double getBlockCenteredZ()
@@ -344,6 +369,7 @@ public class Waypoint implements Serializable
     public void setR(int r)
     {
         this.r = r;
+        this.updateModified();
     }
 
     public int getG()
@@ -354,6 +380,7 @@ public class Waypoint implements Serializable
     public void setG(int g)
     {
         this.g = g;
+        this.updateModified();
     }
 
     public int getB()
@@ -364,6 +391,7 @@ public class Waypoint implements Serializable
     public void setB(int b)
     {
         this.b = b;
+        this.updateModified();
     }
 
     public boolean isEnable()
@@ -377,6 +405,7 @@ public class Waypoint implements Serializable
         {
             this.enable = enable;
             this.dirty = true;
+            this.updateModified();
         }
     }
 
@@ -388,6 +417,7 @@ public class Waypoint implements Serializable
     public void setType(Type type)
     {
         this.type = type;
+        this.updateModified();
     }
 
     public Origin getOrigin()
@@ -398,6 +428,7 @@ public class Waypoint implements Serializable
     public void setOrigin(Origin origin)
     {
         this.origin = origin;
+        this.updateModified();
     }
 
     public String getFileName()
@@ -423,6 +454,23 @@ public class Waypoint implements Serializable
     public void setReadOnly(boolean readOnly)
     {
         this.readOnly = readOnly;
+        this.updateModified();
+    }
+
+    public void updateModified()
+    {
+        this.modified = Instant.now().getEpochSecond();
+    }
+
+    public String getOwner()
+    {
+        return owner;
+    }
+
+    public void setOwner(String owner)
+    {
+        this.owner = owner;
+        this.updateModified();
     }
 
     @Override
@@ -518,5 +566,37 @@ public class Waypoint implements Serializable
     {
         Normal,
         Death
+    }
+
+    public ByteBuf serializeToByteBuf()
+    {
+        ByteBuf buffer = Unpooled.buffer();
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+             ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(this);
+            buffer.writeBytes(baos.toByteArray());
+        } catch (IOException e) {
+            Journeymap.getLogger().error("Failed to serialize Waypoint to ByteBuf: {}", e.getMessage());
+        }
+        Journeymap.getLogger().info("serialized: {}", Arrays.toString(buffer.array()));
+        return buffer;
+    }
+
+    public static Waypoint deserializeFromByteBuf(ByteBuf buffer)
+    {
+        Waypoint waypoint = new Waypoint();
+        Journeymap.getLogger().info("to deserialize: {}", Arrays.toString(buffer.array()));
+
+        byte[] bytes = new byte[buffer.readableBytes()];
+        buffer.readBytes(bytes);
+
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+             ObjectInputStream ois = new ObjectInputStream(bais)) {
+            waypoint = (Waypoint) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            // Handle deserialization errors appropriately
+            Journeymap.getLogger().error("Failed to deserialize Waypoint from ByteBuf: {}: {}", e.getClass().getCanonicalName(), e.getMessage());
+        }
+        return waypoint;
     }
 }

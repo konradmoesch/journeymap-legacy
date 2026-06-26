@@ -7,10 +7,11 @@ package journeymap.client.render.draw;
 
 import com.google.common.cache.CacheLoader;
 import journeymap.client.cartography.RGB;
-import journeymap.client.model.Waypoint;
 import journeymap.client.render.map.GridRenderer;
 import journeymap.client.render.texture.TextureCache;
 import journeymap.client.render.texture.TextureImpl;
+import journeymap.common.model.Waypoint;
+import journeymap.common.model.WaypointHelper;
 
 import java.awt.geom.Point2D;
 
@@ -52,7 +53,7 @@ public class DrawWayPointStep implements DrawStep
         this.color = color;
         this.fontColor = fontColor;
         this.isEdit = isEdit;
-        this.texture = waypoint.getTexture();
+        this.texture = WaypointHelper.getTexture(waypoint);
     }
 
     public void setShowLabel(boolean showLabel)

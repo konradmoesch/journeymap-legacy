@@ -1,0 +1,23 @@
+package journeymap.server.network;
+
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import journeymap.common.Journeymap;
+import journeymap.common.network.waypoints.WaypointAddPacket;
+import journeymap.server.waypoint.ServerWaypointStore;
+import net.minecraft.entity.player.EntityPlayerMP;
+
+public class WaypointAddListener implements IMessageHandler<WaypointAddPacket, IMessage> {
+
+    @Override
+    public IMessage onMessage(WaypointAddPacket message, MessageContext ctx) {
+        EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+        String playerName = player.getCommandSenderName();
+
+        Journeymap.getLogger().info("Got waypoint add packet from user: {}, saving it on server", playerName);
+        ServerWaypointStore.instance().save(message.getWaypoint());
+
+        return null;
+    }
+}

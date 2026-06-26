@@ -9,7 +9,6 @@ import journeymap.client.JourneymapClient;
 import journeymap.client.data.WaypointsData;
 import journeymap.client.forge.helper.ForgeHelper;
 import journeymap.client.log.LogFormatter;
-import journeymap.client.model.Waypoint;
 import journeymap.client.properties.config.Config;
 import journeymap.client.ui.component.JmUI;
 import journeymap.client.ui.dialog.*;
@@ -19,12 +18,12 @@ import journeymap.client.ui.minimap.MiniMapHotkeysHelp;
 import journeymap.client.ui.waypoint.WaypointEditor;
 import journeymap.client.ui.waypoint.WaypointManager;
 import journeymap.common.Journeymap;
+import journeymap.common.model.Waypoint;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.settings.KeyBinding;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
 public class UIManager
