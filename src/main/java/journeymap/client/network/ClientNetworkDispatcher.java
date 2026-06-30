@@ -4,6 +4,7 @@ import journeymap.common.Journeymap;
 import journeymap.common.model.Waypoint;
 import journeymap.common.network.PacketHandler;
 import journeymap.common.network.waypoints.WaypointAddPacket;
+import journeymap.common.network.waypoints.WaypointDeletePacket;
 import journeymap.common.network.waypoints.WaypointSyncRequestPacket;
 import journeymap.common.network.worldid.WorldIDRequestPacket;
 
@@ -44,5 +45,10 @@ public class ClientNetworkDispatcher {
     public static void sendAddWaypoint(Waypoint waypoint) {
         Journeymap.getLogger().info("Sending new waypoint to server");
         PacketHandler.JM_WAYPOINTS.sendToServer(new WaypointAddPacket(waypoint));
+    }
+
+    public static void sendDeleteWaypoint(String waypointId) {
+        Journeymap.getLogger().info("Sending waypoint deletion to server");
+        PacketHandler.JM_WAYPOINTS.sendToServer(new WaypointDeletePacket(waypointId));
     }
 }

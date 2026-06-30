@@ -18,14 +18,12 @@ import journeymap.client.network.WorldInfoHandler;
 import journeymap.common.network.permissions.PermissionsPacket;
 import journeymap.common.network.permissions.PermissionsRequestPacket;
 import journeymap.common.network.waypoints.WaypointAddPacket;
+import journeymap.common.network.waypoints.WaypointDeletePacket;
 import journeymap.common.network.waypoints.WaypointSyncPacket;
 import journeymap.common.network.waypoints.WaypointSyncRequestPacket;
 import journeymap.common.network.worldid.WorldIDPacket;
 import journeymap.common.network.worldid.WorldIDRequestPacket;
-import journeymap.server.network.PermissionsRequestListener;
-import journeymap.server.network.WaypointAddListener;
-import journeymap.server.network.WaypointSyncRequestListener;
-import journeymap.server.network.WorldIdRequestListener;
+import journeymap.server.network.*;
 
 public class PacketHandler {
 
@@ -38,6 +36,7 @@ public class PacketHandler {
         JM_PERMS.registerMessage(PermissionsRequestListener.class, PermissionsRequestPacket.class, 2, Side.SERVER);
         JM_WAYPOINTS.registerMessage(WaypointSyncRequestListener.class, WaypointSyncRequestPacket.class, 4, Side.SERVER);
         JM_WAYPOINTS.registerMessage(WaypointAddListener.class, WaypointAddPacket.class, 6, Side.SERVER);
+        JM_WAYPOINTS.registerMessage(WaypointDeleteListener.class, WaypointDeletePacket.class, 7, Side.SERVER);
     }
 
     public void registerClientHandlers() {

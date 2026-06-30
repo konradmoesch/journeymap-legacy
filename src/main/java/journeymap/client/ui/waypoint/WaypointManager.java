@@ -9,6 +9,7 @@ import journeymap.client.Constants;
 import journeymap.client.command.CmdTeleportWaypoint;
 import journeymap.client.forge.helper.ForgeHelper;
 import journeymap.client.log.JMLogger;
+import journeymap.client.network.ClientNetworkDispatcher;
 import journeymap.client.properties.config.Config;
 import journeymap.client.ui.UIManager;
 import journeymap.client.ui.component.*;
@@ -609,6 +610,7 @@ public class WaypointManager extends JmUI
     public void removeWaypoint(WaypointManagerItem item)
     {
         WaypointStore.instance().remove(item.waypoint);
+        ClientNetworkDispatcher.sendDeleteWaypoint(item.waypoint.getId());
         this.items.remove(item);
     }
 
